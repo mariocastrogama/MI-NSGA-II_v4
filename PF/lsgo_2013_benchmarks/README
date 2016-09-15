@@ -1,0 +1,21 @@
+
+This directory contains the benchmark problems for the CEC'2013 Special
+Session and Competition on Large-Scale Global Optimization based on the
+accompanying technical report.
+
+If you are to use any of the provided codes, please cite the following
+publications: 
+
+X. Li, K. Tang, M. Omidvar, Z. Yang and K. Qin, "Benchmark Functions
+for the CEC'2013 Special Session and Competition on Large Scale Global
+Optimization," Technical Report, Evolutionary Computation and Machine
+Learning Group, RMIT University, Australia, 2013.
+
+This benchmark is implemented in the following three languages:
+
+1) MATLAB/Octave 
+2) C++ 
+3) Java
+
+Each implementation is in a separate directory in the same location as
+this README file.
