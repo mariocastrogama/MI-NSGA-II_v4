@@ -5,7 +5,7 @@ function ch = Crossover(p1,p2)
 % Input arguments
 %  p1 and p2 : 2 parents of population
 % Output arguments
-%  gernerates 2 children from the parents 
+%  generates 2 children from the parents 
 %
 % Created by
 % MSc Mario Castro Gama
@@ -21,6 +21,19 @@ function ch = Crossover(p1,p2)
 %   global nc
 %   global nc_1
   switch CrossType
+    case 'Perm2points'
+      % Explicitly intended for PERMUTATION decision variables
+      x1	    = p1.DecisionVariables;
+  	  x2      = p2.DecisionVariables;
+      
+      % Perform PERMUTATION CROSSOVER, each vector contains 1:nvar only one
+      % time
+      [y1, y2] = cross2points(x1,x2);
+
+      % Return values to children in MIGA
+      ch      = CreateEmptyIndividuals(2);
+      ch(1).DecisionVariables = y1;
+      ch(2).DecisionVariables = y2;
     case 'Binary'
   	  x1	    = p1.DecisionVariables;
   	  x2      = p2.DecisionVariables;
