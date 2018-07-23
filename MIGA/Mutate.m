@@ -1,7 +1,14 @@
 function [q] = Mutate(p)
 % Mutate.m : implements the mutation operator
-% Accepts MutType which can be Random or Polinomial
-% 
+% Accepts 
+% MutType which can be Random or Polinomial for Real variables
+% MutType can Flipbit for Binary variables
+% MutType can be Swap for Real, Binary or integers, or Permutations
+%
+% Developed by: 
+% MSc. Mario Castro-Gama
+% 2016-05-20
+% 2016-11-10, included the 'Swap' required for Permutations
   global nvar;
   global MutType;
   global VarMin;
@@ -13,24 +20,39 @@ function [q] = Mutate(p)
   q = CreateEmptyIndividuals();
   y = p.DecisionVariables;
   switch MutType
+    case 'Swap'
+      % Can be applied to real, integers and permutations
+      % Exchanges the values of two positions in the same Chromosome
+      for j = 1:nvar
+        % because probab_mut is low find lower value
+        if rand < probab_mut 
+          ii    = randi(nvar);
+          tmp   = y(j);
+          y(j)  = y(ii);
+          y(ii) = tmp;
+        end
+      end
     case 'Flipbit'
-      for j = 1:nvar;
+      % This one is explicitly intended for binary decision variables
+      for j = 1:nvar
         if rand < probab_mut % because probab_mut is low find lower value
           y(j) = 1-y(j);
         end
       end
     case 'Random'
-      for j = 1:nvar;
+      % This one is explicitly intended for real decision variables
+      for j = 1:nvar
         if rand < probab_mut
           y(j) = VarMin(j) + (VarMax(j) - VarMin(j)) * rand; 
           % y(j)=unifrnd(VarMin,VarMax); % if you have Statistical Toolbox
         end
       end
     case 'Polinomial'
-      for j=1:nvar;
+      % This one is explicitly intended for real decision variables
+      for j=1:nvar
         if rand < probab_mut
           rj = rand;
-          if rj < 0.5;
+          if (rj < 0.5)
             delta_1 = (y(j) - VarMin(j))/(VarMax(j)-VarMin(j));
             delta_q = (2*rj+(1-2*rj)*(1-delta_1)^(nm+1))^nm_1 - 1;
           else
@@ -41,5 +63,6 @@ function [q] = Mutate(p)
         end
       end
   end
-  q.DecisionVariables = y;
+  % Check boundaries and return values
+  q.DecisionVariables = CheckBoundaries(y);
 end
